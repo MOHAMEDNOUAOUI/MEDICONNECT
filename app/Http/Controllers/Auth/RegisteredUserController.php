@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SpecialiteController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -20,7 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $specialitecontroller = new SpecialiteController;
+        $Allspecialites = $specialitecontroller->getAllSpecialites();
+        return view('auth.register' , ['specialites' => $Allspecialites]);
     }
 
     /**
@@ -40,12 +43,12 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'phonenumber' => $request->Phone,
+            'id_specialite' => $request->specialite
         ]);
 
-        event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('login');
     }
 }
