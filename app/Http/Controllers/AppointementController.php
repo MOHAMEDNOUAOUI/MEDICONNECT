@@ -6,6 +6,7 @@ use App\Models\appointement;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AppointementController extends Controller
 {
@@ -40,7 +41,22 @@ class AppointementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $doctor_id = $request->input('doctor_id');
+        $patientId = Auth::id();
+        $time_slot = $request->input('time_slot');
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+
+        appointement::create([
+            'doctor_id' => $doctor_id,
+            'patient_id' => $patientId,
+            'time_slot' => $time_slot,
+            'appointement_date' => $currentDate
+        ]);
+
+
+        return redirect()->back();
+
     }
 
     /**

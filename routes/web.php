@@ -22,7 +22,10 @@ use App\Http\Controllers\MedicamentsController;
 
 
     /////
-    Route::get('/', [PagesController::class , 'index'])->middleware(['auth', 'verified' , 'patient'])->name('home');
+    Route::middleware(['auth', 'verified' , 'patient'])->group(function() {
+        Route::get('/', [PagesController::class , 'index'])->name('home');
+        Route::post('/appointement' , [AppointementController::class , 'store'])->name('appointement.add');
+    });
 
 
 

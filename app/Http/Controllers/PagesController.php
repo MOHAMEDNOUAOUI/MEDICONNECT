@@ -8,12 +8,44 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\appointement;
+use Carbon\Carbon;
 
 class PagesController extends Controller
 {
     public function index() {
-        $doctors = User::where('role' , 'doctor')->get();
-        return view('PatientPage');
+        $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
+        // $currentTime->setTimezone('Africa/Casablanca');
+        $doctors = User::with(['appointmentsAsDoctor' , 'specialite'])->where('role' , 'doctor')->paginate(2);
+        
+
+
+        $timeSlots = [
+            '8:00 AM - 9:00 AM',
+            '9:00 AM - 10:00 AM',
+            '10:00 AM - 11:00 AM',
+            '11:00 AM - 12:00 PM',
+            '1:00 PM - 2:00 PM',
+            '2:00 PM - 3:00 PM',
+            '3:00 PM - 4:00 PM',
+            '4:00 PM - 5:00 PM',
+        ];
+
+
+
+        // foreach($doctors as $doctor ){
+        //     foreach($doctor->appointmentsAsDoctor as $appointement){
+        //             dd($appointement->appointment_date);
+        //     }
+        // }
+
+        
+        
+
+        return view('PatientPage' , [
+            'doctors' => $doctors , 
+            'Datezone' => $currentDate,
+            'timeslot' => $timeSlots,        
+        ]);
     }
 
     public function dashboard(Request $request) : View

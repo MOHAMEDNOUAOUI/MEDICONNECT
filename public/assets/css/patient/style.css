@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+
+:root {
+	--poppins: 'Poppins', sans-serif;
+	--lato: 'Lato', sans-serif;
+
+	--light: #F9F9F9;
+	--blue: #3C91E6;
+	--light-blue: #CFE8FF;
+	--grey: #eee;
+	--dark-grey: #AAAAAA;
+	--dark: #342E37;
+	--red: #DB504A;
+	--yellow: #FFCE26;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #FFE0D3;
+    --sidebar : #100F32;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--grey) !important;
+	overflow-x: hidden;
+    min-height: 100vh;
+}
+
+a,li{
+    list-style: none;
+    text-decoration: none;
+}
+
+#page1 {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+}
+
+#page1 #content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+#page1 #page1bottom {
+    background-color: var(--blue);
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+
+#checkout {
+    padding: 0.5rem 1rem;
+    color: white;
+    font-size: 1rem;
+    transition: 0.3s ease;
+    border: 1px solid transparent;
+}
+
+#checkout:hover {
+    color: var(--blue);
+    background-color: transparent;
+    border: 1px solid var(--blue);
+}
+
+/* PAGE 2 */ 
+
+#page2 {
+    width: 100%;
+    padding-top: 2rem;
+}
+
+
+#page2 .wrapper {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 20px;
+    height: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+
+.box {
+    color: #fff;
+    border-radius: 5px;
+    font-size: 150%;
+}
+
+.box-right .box-info {
+    padding: 20px;
+}
+
+.box-right {
+    background: #36D1DC;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#page2 .box-A  {
+    grid-column: span 3;
+}
+
+#page2 .box-A .boxer {
+    display: grid;
+	grid-template-columns: 1fr;
+	grid-gap: 24px;
+}
+
+#page2 .box-A .boxer .box-li {
+    grid-column: span 1;
+    padding: 24px;
+	background: var(--light);
+	border-radius: 20px;
+	display: flex;
+    flex-direction: column;
+	justify-content: center;
+    color: black;
+    gap: 10px;
+}
+
+
+
+
+#page2 .wrapper .box-info {
+    grid-column: span 3;
+	display: grid;
+    text-align: center;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+}
+
+#page2 .wrapper .box-info h3 {
+    text-transform: uppercase;
+}
+
+
+
+#page2 .wrapper .box-info li {
+    grid-column: 1;
+        padding: 20px;
+        background: var(--light);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        grid-gap: 24px;
+        color: black;
+}
+
+#page2 .B {
+    grid-column: 4;
+    overflow-y: auto;
+}
+
+.box-B {
+    height: auto;
+}
+
+
+.timeappointement {
+    display: grid;
+    grid-template-columns: repeat(4,1fr); 
+    font-size: 1rem;
+    gap: 10px;
+}
+
+.timeappointement p {
+    grid-column: span 1;
+    background-color: var(--blue);
+    padding: 0.7rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: 0.3s ease;
+}
+
+.timeappointement p:hover {
+    color: var(--blue);
+    background-color: transparent;
+    border: 1px solid var(--blue);
+}
