@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\appointement;
+use App\Models\favourite;
 use Carbon\Carbon;
 
 class PagesController extends Controller
@@ -15,22 +16,8 @@ class PagesController extends Controller
     public function index() {
         $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
         // $currentTime->setTimezone('Africa/Casablanca');
-        $doctors = User::with(['appointmentsAsDoctor' , 'specialite'])->where('role' , 'doctor')->paginate(2);
+        $doctors = User::with(['appointmentsAsDoctor' , 'specialite'])->where('role' , 'doctor')->paginate(12);
         
-
-
-        $timeSlots = [
-            '8:00 AM - 9:00 AM',
-            '9:00 AM - 10:00 AM',
-            '10:00 AM - 11:00 AM',
-            '11:00 AM - 12:00 PM',
-            '1:00 PM - 2:00 PM',
-            '2:00 PM - 3:00 PM',
-            '3:00 PM - 4:00 PM',
-            '4:00 PM - 5:00 PM',
-        ];
-
-
 
         // foreach($doctors as $doctor ){
         //     foreach($doctor->appointmentsAsDoctor as $appointement){
@@ -38,14 +25,22 @@ class PagesController extends Controller
         //     }
         // }
 
+
+        $patientId  = Auth::id();
+        $userappointements = appointement::with(['patient'])->where('patient_id' , $patientId)->get();
+
+
+        $favourites = favourite::with(['doctor'])->get();
         
         
 
-        return view('PatientPage' , [
+        return view('patient.PatientPage' , [
             'doctors' => $doctors , 
             'Datezone' => $currentDate,
-            'timeslot' => $timeSlots,        
+            'userschedul' => $userappointements,
+            'favourite' => $favourites   
         ]);
+
     }
 
     public function dashboard(Request $request) : View
@@ -73,5 +68,27 @@ class PagesController extends Controller
         $appointements = appointement::with('Patient' , 'doctor')->where('doctor_id' , $doctorId)->count();
 
         return view('doctor.doctorpage' , ['appointements' => $appointements , 'patients' => $patients]);
+    }
+
+
+
+    public function DedicatedDoctorPage($doctorname) {
+
+        $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
+
+        $doctor = User::with(['appointmentsAsDoctor' , 'specialite'])->where('name' , $doctorname)->get();
+
+        $timeSlots = [
+            '8:00 AM - 9:00 AM',
+            '9:00 AM - 10:00 AM',
+            '10:00 AM - 11:00 AM',
+            '11:00 AM - 12:00 PM',
+            '13:00 PM - 14:00 PM',
+            '14:00 PM - 15:00 PM',
+            '15:00 PM - 16:00 PM',
+            '16:00 PM - 17:00 PM',
+        ];
+
+        return view ('patient.doctor' , ['doctor' => $doctor,'timeslot' => $timeSlots,'Datezone' => $currentDate]);
     }
 }

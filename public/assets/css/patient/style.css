@@ -6,7 +6,7 @@
 	--lato: 'Lato', sans-serif;
 
 	--light: #F9F9F9;
-	--blue: #3C91E6;
+	--blue: #509ce7;
 	--light-blue: #CFE8FF;
 	--grey: #eee;
 	--dark-grey: #AAAAAA;
@@ -56,7 +56,7 @@ a,li{
 }
 
 #page1 #page1bottom {
-    background-color: var(--blue);
+    background: linear-gradient(114.9deg, rgb(34, 34, 34) 8.3%, rgb(0, 40, 60) 41.6%, rgb(0, 143, 213) 93.4%);
     height: 25%;
     display: flex;
     align-items: center;
@@ -91,10 +91,12 @@ a,li{
 #page2 .wrapper {
     display: grid;
     grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(3,1fr);
     grid-gap: 20px;
     height: 100%;
     padding-left: 2rem;
     padding-right: 2rem;
+    min-height: 80vh;
 }
 
 
@@ -114,19 +116,22 @@ background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-2
 background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-#page2 .box-A  {
-    grid-column: span 3;
+.box-right {
+    grid-column: 4;
 }
 
-#page2 .box-A .boxer {
+#page2  .boxer {
+    grid-column: span 3;
     display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: repeat(4,1fr);
 	grid-gap: 24px;
 }
 
-#page2 .box-A .boxer .box-li {
+
+
+#page2  .boxer .box-li {
     grid-column: span 1;
-    padding: 24px;
+    padding: 15px;
 	background: var(--light);
 	border-radius: 20px;
 	display: flex;
@@ -134,6 +139,13 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
 	justify-content: center;
     color: black;
     gap: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#page2 .boxer .box-li:hover {
+    transform: scale(1.1);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 
@@ -145,6 +157,8 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
     text-align: center;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 	grid-gap: 24px;
+    height: 35rem;
+    overflow: auto;
 }
 
 #page2 .wrapper .box-info h3 {
@@ -171,29 +185,74 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
 
 .box-B {
     height: auto;
-}
-
-
-.timeappointement {
-    display: grid;
-    grid-template-columns: repeat(4,1fr); 
-    font-size: 1rem;
-    gap: 10px;
+    grid-row: span 3;
 }
 
 .timeappointement p {
-    grid-column: span 1;
-    background-color: var(--blue);
-    padding: 0.7rem;
     color: white;
-    font-weight: bold;
+    padding: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
     cursor: pointer;
     border: 1px solid transparent;
     transition: 0.3s ease;
 }
 
-.timeappointement p:hover {
+.timeappointement .available{
+    background-color: var(--blue);
+}
+
+.timeappointement .notavailable {
+    background-color: var(--red);
+}
+
+.timeappointement .available:hover {
     color: var(--blue);
     background-color: transparent;
     border: 1px solid var(--blue);
+}
+
+
+.rightop {
+    border-radius: 10px;
+    padding: 10px;
+    grid-column: 4;
+    grid-row: 1;
+
+    background-color: var(--blue);
+    color: white;
+}
+
+.rightbottom {
+    border-radius: 10px;
+    padding: 10px;
+    grid-column: 4;
+    grid-row: span 3;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    
+}
+
+
+.links{
+    grid-row: 3;
+    grid-column: span 3;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+
+.favorite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.favorite i {
+    font-size: 1.6rem;
+}
+
+.favorite i:hover {
+    -webkit-color: red;
 }

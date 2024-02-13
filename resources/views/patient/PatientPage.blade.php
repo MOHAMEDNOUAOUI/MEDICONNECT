@@ -17,7 +17,7 @@
     <section id="page1" class="bg-stone-700">
 
 
-        <nav class="border-gray-200 dark:bg-gray-900">
+    <nav class="border-gray-200 dark:bg-gray-900">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
@@ -36,25 +36,36 @@
                             <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
                         </li>
 
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
-                        </li>
+                        
 
 
                         <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Appointements</a>
-                        </li>
-
-                        <li>
-                            <a href="{{route('profile.edit')}}" class="profile">
-                                <img src="img/people.png">
-                            </a>
+                            <a class="" href="{{ route('logout')}}">
+                               Appointements</a>
                         </li>
 
                         <li>
                             <a href="{{ route('logout')}}">
                                 logout</a>
                         </li>
+
+
+                        <li>
+                            <a href="">
+                            <i class='bx bx-heart text-2xl'></i>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="{{route('profile.edit')}}">
+                                <img src="img/people.png">
+                            </a>
+                        </li>
+
+
+                       
+                        
 
                     </ul>
                 </div>
@@ -89,58 +100,77 @@
     <section id="page2">
         <div class="wrapper">
 
-            <div class="box box-left box-A">
                 <ul class="boxer">
 
                 @foreach($doctors as $doctor)
+
+
     <li class="box-li">
         <div class="info">
+        <div class="favorite" onclick="AA()">
+        <h3 class="text-xl uppercase">{{$doctor->name}}</h3>
+        
+
+
+        <!-- FAVOURITE PART -->
+
+@if($favourite)
+@foreach($favourite as $favouri)
+        @if($favouri->doctor_id == $doctor->id && $favouri->patient_id == Auth::id())
+        <i class='bx bxs-heart'></i>
+        @else
+        <i class='bx bx-heart'></i>
+        @endif
+
+@endforeach
+@endif
+
+
+        </div>
             <p class="text-lg">{{$doctor->specialite->Specialite}}</p>
-            <h3 class="text-4xl uppercase">{{$doctor->name}}</h3>
-            <h3>Available Appointements</h3>
+            
 
             <div class="timeappointement">
                 @php
                     $bookedSlots = $doctor->appointmentsAsDoctor->where('appointment_date', $Datezone)->pluck('time_slot')->toArray();
                 @endphp
 
-                @foreach($timeslot as $time)
-                    @if(!in_array($time, $bookedSlots))
-                        <p data-key="{{$doctor->id}}" class="appointementtime">{{$time}}</p>
-                    @endif
-                @endforeach
+            @if(count($bookedSlots) < 8)
+                <p data-key="{{$doctor->name}}" class="Av available">doctor available</p>
+                @else 
+                <p data-key="{{$doctor->name}}" class="Av notavailable">doctor is not available</p>
+            @endif
             </div>
         </div>
     </li>
+
+
+
 @endforeach
 
-<form id="myForm" action="{{ route('appointement.add') }}" method="post" hidden>
-@csrf
-    <input type="text" id="time_slot" name="time_slot">
-    <input type="text" id="doctor_id" name="doctor_id">
-</form>
 
-<div class="links">
-{{$doctors->links()}}
-</div>
+
+
+
 
 
                 </ul>
+    
+
+
+        <div class="rightop">
+            test
+        </div>
+
+        <div class="rightbottom">
+test
+        </div>
+
+
+
+            <div class="links">
+                {{$doctors->links()}}
             </div>
-
-
-
-            <div class="box box-right box-B">
-                <ul class="box-info">
-                    <h3>Appointements</h3>
-                    <li class="colored">
-                        test
-                    </li>
-                </ul>
-            </div>
-
-
-            
         </div>
     </section>
 
@@ -155,20 +185,61 @@
     <script>
 
 
-document.querySelectorAll('.appointementtime').forEach(function(element) {
-  element.addEventListener('click' , function() {
-    
-    let timeInput = document.querySelector('#time_slot');
-    let doctorIdInput = document.querySelector('#doctor_id');
 
-    let id = this.getAttribute('data-key');
+document.querySelectorAll('.Av').forEach(function(element) {
+    element.addEventListener('click' , function() {
+        let doctorname = this.getAttribute('data-key');
+        console.log(doctorname);
 
-    timeInput.value = this.textContent;
-    doctorIdInput.value = id;
+        window.location.href = '/doctor/' + doctorname;
+    })
+})
 
-    document.querySelector('#myForm').submit();
-  })
-});
+
+        
+
+
+        document.querySelectorAll('.bx').forEach(function(heart) {
+            if(heart.classList.contains('bx-heart') || heart.classList.contains('bxs-heart')){
+                heart.addEventListener('mouseover' , function(e) {
+                if(e.target.classList.contains('bx-heart')){
+                    e.target.classList.remove('bx-heart');
+                    e.target.classList.add('bxs-heart');
+                }
+                else{
+                    e.target.classList.remove('bxs-heart');
+                    e.target.classList.add('bx-heart');
+                }
+                
+            })
+
+
+            heart.addEventListener('mouseout' , function(e){
+                if(e.target.classList.contains('bx-heart')){
+                    e.target.classList.remove('bx-heart');
+                    e.target.classList.add('bxs-heart');
+                }
+                else{
+                    e.target.classList.remove('bxs-heart');
+                    e.target.classList.add('bx-heart');
+                }
+            })
+
+
+            heart.addEventListener('click' , function(e) {
+                if(e.target.classList.contains('bx-heart')){
+                    e.target.classList.remove('bx-heart');
+                    e.target.classList.add('bxs-heart');
+                }
+                else{
+                    e.target.classList.remove('bxs-heart');
+                    e.target.classList.add('bx-heart');
+                }
+            })
+            }
+            
+        })
+
 
 
 
