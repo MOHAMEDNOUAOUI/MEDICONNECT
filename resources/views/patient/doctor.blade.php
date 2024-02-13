@@ -137,6 +137,51 @@
 
 
 <div class="comments">
+
+<div class="Cinfo">
+<h3 class="text-3xl">Comments ({{$commentscount}})</h3>
+<p>Start a discussion,not a fire.Post with kidness.</p>
+</div>
+
+
+<div class="commentsection">
+
+<div class="sectionforinput">
+    <p>profile</p>
+   <form id="form" action="{{route('comment.add')}}" method="post">
+   @csrf
+   <input type="text" id="comment" name="comment" placeholder="Add a comment...">
+   @foreach($doctor as $one)
+   <input type="text" hidden name="doctor_id" value="{{$one->id}}">
+   @endforeach
+   </form>
+</div>
+
+
+<div class="sec">
+@foreach($comments as $comment)
+
+<div class="secunder">
+    <p>Profile</p>
+
+
+    <div class="holder">
+    
+    <div>
+    <h3>{{$comment->patient->name}}</h3>
+    <p>{{$comment->created_at_diff}}</p>
+    </div>
+    <h3>{{$comment->comment}}</h3>
+
+    </div>
+
+
+</div>
+
+@endforeach
+</div>
+    
+</div>
     
 </div>
 
@@ -160,6 +205,19 @@
     document.querySelector('#myForm').submit();
   })
 });
+
+
+
+document.querySelector('#comment').addEventListener('keypress' , function(event) {
+    if(event.key === 'Enter'){
+        event.preventDefault();
+
+        document.querySelector('#form').submit();
+    }
+})
+
+
+
 
 
 </script>

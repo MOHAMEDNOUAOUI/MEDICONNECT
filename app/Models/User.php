@@ -70,4 +70,27 @@ class User extends Authenticatable
         return $this->hasMany(favourite::class, 'patient_id');
     }
 
+
+
+    public function patientComments() {
+        return $this->hasMany(comments::class, 'patient_id');
+    }
+
+    public function doctorComments()
+    {
+        return $this->hasMany(comments::class, 'doctor_id');
+    }
+
+
+    public function rating()
+{
+    return $this->hasOne(ratings::class, 'patient_id');
+}
+
+public function receivedRatings()
+{
+    return $this->hasMany(ratings::class, 'doctor_id');
+}
+    
+
 }

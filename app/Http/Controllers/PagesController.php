@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\appointement;
+use App\Models\comments;
 use App\Models\favourite;
 use Carbon\Carbon;
 
@@ -74,7 +75,13 @@ class PagesController extends Controller
 
     public function DedicatedDoctorPage($doctorname) {
 
+        $doctorId = User::where('name', $doctorname)->value('id');
+
         $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
+
+        $currentDatetime = Carbon::now()->setTimezone('Africa/casablanca');
+
+
 
         $doctor = User::with(['appointmentsAsDoctor' , 'specialite'])->where('name' , $doctorname)->get();
 
@@ -89,6 +96,11 @@ class PagesController extends Controller
             '16:00 PM - 17:00 PM',
         ];
 
-        return view ('patient.doctor' , ['doctor' => $doctor,'timeslot' => $timeSlots,'Datezone' => $currentDate]);
+
+        $comments = comments::with(['doctor'])->where('doctor_id', $doctorId)->orderBy('created_at', 'desc')->limit(4)->get();
+
+        $commentscount =  comments::with(['doctor'])->where('doctor_id' , $doctorId)->count();
+
+        return view ('patient.doctor' , ['doctor' => $doctor,'timeslot' => $timeSlots,'Datezone' => $currentDate , 'comments'=>$comments , 'commentscount'=>$commentscount]);
     }
 }

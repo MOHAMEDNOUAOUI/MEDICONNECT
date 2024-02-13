@@ -1,6 +1,7 @@
     <?php
 
 use App\Http\Controllers\AppointementController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\doctorpanel;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MedicamentsController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\MedicamentsController;
         Route::get('/doctor/{name}' , [PagesController::class , 'DedicatedDoctorPage'])->name('Dedicated.doctor.page');
         Route::post('/addfavourite' , [FavouriteController::class , 'create'])->name('favourite.add');
         Route::post('/deletefavourite' , [FavouriteController::class , 'destroy'])->name('favourite.destroy');
+        Route::post('/doctor/addcomment' , [CommentsController::class , 'create'])->name('comment.add');
     });
 
 
