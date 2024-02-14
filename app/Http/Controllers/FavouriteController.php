@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\favourite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavouriteController extends Controller
 {
@@ -18,9 +19,22 @@ class FavouriteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $exist = favourite::where('doctor_id' , $request->input('doctorid'))->where('patient_id' , Auth::id())->get();
+        
+
+        if(count($exist) > 0) {
+            favourite::where('doctor_id' , $request->input('doctorid'))->where('patient_id' , Auth::id())->delete();
+        }
+        else{
+            favourite::create([
+                'doctor_id' => $request->input('doctorid'),
+                'patient_id' => Auth::id()
+            ]);
+        }
+
+        return redirect()->back();
     }
 
     /**

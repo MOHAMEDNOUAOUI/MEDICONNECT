@@ -8,7 +8,8 @@ use App\Http\Controllers\MedicamentsController;
     use App\Http\Controllers\ProfileController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\PagesController;
-    use App\Http\Controllers\SpecialiteController;
+use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\SpecialiteController;
     use App\Models\Specialite;
 
     /*
@@ -31,6 +32,7 @@ use App\Http\Controllers\MedicamentsController;
         Route::post('/addfavourite' , [FavouriteController::class , 'create'])->name('favourite.add');
         Route::post('/deletefavourite' , [FavouriteController::class , 'destroy'])->name('favourite.destroy');
         Route::post('/doctor/addcomment' , [CommentsController::class , 'create'])->name('comment.add');
+        Route::post('/doctor/rate' , [RatingsController::class , 'create'])->name('rating.add');
     });
 
 

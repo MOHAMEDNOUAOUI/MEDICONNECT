@@ -10,6 +10,14 @@ class ratings extends Model
     use HasFactory;
 
 
+
+    protected $fillable = [
+        'doctor_id',
+        'rating',
+        'patient_id'
+    ];
+
+
     public function patient()
 {
     return $this->belongsTo(User::class, 'patient_id');

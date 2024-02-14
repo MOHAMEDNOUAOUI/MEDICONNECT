@@ -18,64 +18,70 @@
 </head>
 <body>
 
-
-<nav class="border-gray-200 dark:bg-gray-900">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Mediconnect</span>
-                </a>
-                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
-                    </svg>
-                </button>
-                <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                    <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
-                        </li>
-
-                        
-
-
-                        <li>
-                            <a href="{{ route('logout')}}">
-                               Appointements</a>
-                        </li>
-
-
-                        <li>
-                            <a href="{{ route('logout')}}">
-                                logout</a>
-                        </li>
-
-
-                        <li>
-                            <a href="{{route('profile.edit')}}">
-                                <img src="img/people.png">
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
+<input type="text" hidden id="doctorId" value="{{$doctorId}}">
 
 
 
 <div class="wrapper">
 
+
     <div class="profile">
+
+    <div class="icon"></div>
+
+    <div class="flex items-center justify-center flex-col">
+        <h3 class="text-xl font-bold">{{$doctorinfos->name}}</h3>
+        <p>{{$doctorinfos->specialite->Specialite}}</p>
+    </div>
+
+
+    <div class="flex items-center justify-center flex-col">
+        <p>Contact</p>
+        <p>Email : {{$doctorinfos->email}}</p>
+        <p>Phone : {{$doctorinfos->phonenumber}}</p>
+
+        <p>Rating</p>
+
+
+        <p>
+        @for ($i = 0; $i < 5; $i++)
+    
+        @if ($avgrating > 0)
+        @for ($i = 1; $i <= 5; $i++)
+    @if ($i <= $avgrating)
+        <i data-key="{{$i}}" class='stars text-2xl bx bxs-star'></i>
+    @else
+        <i data-key="{{$i}}" class='stars text-2xl bx bx-star'></i>
+    @endif
+@endfor
+        @break
+
+
+
+    @else
+        <i data-key="{{$i+1}}" class='stars text-2xl bx bx-star'></i>
+    @endif
+@endfor
+
+
+
+        </p>
+
+
+
+    </div>
 
     </div>
 
     <div class="appointements">
-        
-    <h1 class="text-2xl">Appointements</h1>
+
+      <div class="h1 flex gap-3 items-end">
+        <h1 class="text-2xl">Appointements | </h1>
+        <h3><a href="{{route('home')}}">Home</a> > <span>@foreach($doctor as $one)
+        {{$one->name}}
+    @endforeach</span></h3>
+      </div>  
+    
 
         <div class="top">
         <i class='bx bx-sun'></i>
@@ -124,6 +130,12 @@
 
     </div>
 
+
+    <div class="dicher">
+        <h1 class="text-2xl">Here you can find all the appointements for this particular Doctor</h1>
+        <p>choose one in particular</p>
+    </div>
+
 </div>
 
 
@@ -133,6 +145,15 @@
     <input type="text" id="time_slot" name="time_slot">
     <input type="text" id="doctor_id" name="doctor_id">
 </form>
+
+<!-- FORM FOR THE RATING -->
+
+<form id="RATE" action="{{ route('rating.add') }}" method="post" hidden>
+@csrf
+    <input type="text" id="rating" name="rating">
+    <input type="text" id="doctorrating_id" name="doctor_id">
+</form>
+
 
 
 
@@ -192,7 +213,7 @@
 <script>
 
     document.querySelectorAll('.appointementtime').forEach(function(element) {
-  element.addEventListener('click' , function() {
+    element.addEventListener('click' , function() {
     
     let timeInput = document.querySelector('#time_slot');
     let doctorIdInput = document.querySelector('#doctor_id');
@@ -215,6 +236,59 @@ document.querySelector('#comment').addEventListener('keypress' , function(event)
         document.querySelector('#form').submit();
     }
 })
+
+
+var stars = document.querySelectorAll('.stars');
+
+
+stars.forEach(function(star) {
+    star.addEventListener('mouseover', function() {
+        let id = this.getAttribute('data-key');
+
+        stars.forEach(function(s, i) {
+            if (i < id) {
+                s.style.color = "blue";
+            }
+
+        });
+    });
+
+    star.addEventListener('mouseout', function() {
+        stars.forEach(function(s) {
+            s.style.color = "";
+        });
+    });
+
+
+
+    star.addEventListener('click' , function(s){
+        var rating = this.getAttribute('data-key');
+        var doctorid = document.querySelector('#doctorId').value;
+
+        console.log(doctorid);
+
+        document.querySelector('#rating').value = rating;
+
+        document.querySelector('#doctorrating_id').value = doctorid;
+
+
+
+
+        document.querySelector('#RATE').submit();
+    } )
+});
+
+
+
+// rate form
+
+RATE
+
+
+var rating
+var rating
+var doctorrating_id
+
 
 
 

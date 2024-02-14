@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\appointement;
 use App\Models\comments;
 use App\Models\favourite;
+use App\Models\ratings;
 use Carbon\Carbon;
 
 class PagesController extends Controller
@@ -31,7 +32,9 @@ class PagesController extends Controller
         $userappointements = appointement::with(['patient'])->where('patient_id' , $patientId)->get();
 
 
-        $favourites = favourite::with(['doctor'])->get();
+        $favourites = favourite::with(['doctor'])->where('patient_id' , Auth::id())->get();
+
+
         
         
 
@@ -43,6 +46,9 @@ class PagesController extends Controller
         ]);
 
     }
+
+
+
 
     public function dashboard(Request $request) : View
     {
@@ -57,6 +63,10 @@ class PagesController extends Controller
     ]);
     }
 
+
+
+
+
     public function DoctorPage() {
         $appointementcontroller = new AppointementController();
 
@@ -67,6 +77,7 @@ class PagesController extends Controller
         })->where('role', 'patient')->count();
 
         $appointements = appointement::with('Patient' , 'doctor')->where('doctor_id' , $doctorId)->count();
+
 
         return view('doctor.doctorpage' , ['appointements' => $appointements , 'patients' => $patients]);
     }
@@ -85,6 +96,9 @@ class PagesController extends Controller
 
         $doctor = User::with(['appointmentsAsDoctor' , 'specialite'])->where('name' , $doctorname)->get();
 
+
+        $doctorinfos = User::with(['specialite'])->where('id' , $doctorId)->first();
+
         $timeSlots = [
             '8:00 AM - 9:00 AM',
             '9:00 AM - 10:00 AM',
@@ -97,10 +111,16 @@ class PagesController extends Controller
         ];
 
 
+
         $comments = comments::with(['doctor'])->where('doctor_id', $doctorId)->orderBy('created_at', 'desc')->limit(4)->get();
 
         $commentscount =  comments::with(['doctor'])->where('doctor_id' , $doctorId)->count();
 
-        return view ('patient.doctor' , ['doctor' => $doctor,'timeslot' => $timeSlots,'Datezone' => $currentDate , 'comments'=>$comments , 'commentscount'=>$commentscount]);
+
+        $rating = ratings::where('doctor_id' , $doctorId)->avg('rating');
+        $intrating = floor($rating);
+        $FINALRATING = min(max($intrating, 0), 5);
+
+        return view ('patient.doctor' , ['doctor' => $doctor,'doctorinfos'=>$doctorinfos,'timeslot' => $timeSlots,'Datezone' => $currentDate , 'comments'=>$comments , 'commentscount'=>$commentscount , 'avgrating' => $FINALRATING , 'doctorId' => $doctorId]);
     }
 }

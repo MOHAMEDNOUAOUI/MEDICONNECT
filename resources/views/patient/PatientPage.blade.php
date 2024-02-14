@@ -19,7 +19,7 @@
 
     <nav class="border-gray-200 dark:bg-gray-900">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="{{route('home')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Mediconnect</span>
                 </a>
@@ -40,7 +40,7 @@
 
 
                         <li>
-                            <a class="" href="{{ route('logout')}}">
+                            <a class="" href="">
                                Appointements</a>
                         </li>
 
@@ -49,12 +49,6 @@
                                 logout</a>
                         </li>
 
-
-                        <li>
-                            <a href="">
-                            <i class='bx bx-heart text-2xl'></i>
-                            </a>
-                        </li>
 
 
                         <li>
@@ -107,23 +101,32 @@
 
     <li class="box-li">
         <div class="info">
-        <div class="favorite" onclick="AA()">
+        <div class="favorite">
         <h3 class="text-xl uppercase">{{$doctor->name}}</h3>
         
 
 
         <!-- FAVOURITE PART -->
+@if(count($favourite) > 0)
 
-@if($favourite)
 @foreach($favourite as $favouri)
-        @if($favouri->doctor_id == $doctor->id && $favouri->patient_id == Auth::id())
-        <i class='bx bxs-heart'></i>
+        @if($favouri->doctor_id == $doctor->id)
+        <i data-key="{{$doctor->id}}" class="bx bxs-heart"></i>
         @else
-        <i class='bx bx-heart'></i>
+        <i data-key="{{$doctor->id}}" class="bx bx-heart"></i>
         @endif
-
 @endforeach
+
+   
+@else
+<i data-key="{{$doctor->id}}" class="bx bx-heart"></i>
 @endif
+
+
+<form id="favform" action="{{ route('favourite.add')}}" method="post" hidden>
+@csrf
+    <input type="text" id="doctorid" name="doctorid">
+</form>
 
 
         </div>
@@ -159,11 +162,7 @@
 
 
         <div class="rightop">
-            test
-        </div>
-
-        <div class="rightbottom">
-test
+            <h3>Favourites</h3>
         </div>
 
 
@@ -235,6 +234,14 @@ document.querySelectorAll('.Av').forEach(function(element) {
                     e.target.classList.remove('bxs-heart');
                     e.target.classList.add('bx-heart');
                 }
+
+
+                document.querySelector('#doctorid').value = heart.getAttribute('data-key');
+                document.querySelector('#favform').submit();
+
+
+
+
             })
             }
             

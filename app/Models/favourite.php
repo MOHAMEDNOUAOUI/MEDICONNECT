@@ -20,5 +20,9 @@ class favourite extends Model
         return $this->belongsTo(User::class, 'doctor_id');
     }
 
+    public function patient() {
+        return $this->belongsTo(User::class , 'patient_id');
+    }
+
 
 }

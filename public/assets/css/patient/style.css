@@ -33,6 +33,8 @@ body {
     background: var(--grey) !important;
 	overflow-x: hidden;
     min-height: 100vh;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
 }
 
 a,li{
@@ -44,6 +46,7 @@ a,li{
     width: 100%;
     height: 100vh;
     background-color: white;
+    scroll-snap-align: start;
 }
 
 #page1 #content {
@@ -56,7 +59,7 @@ a,li{
 }
 
 #page1 #page1bottom {
-    background: linear-gradient(114.9deg, rgb(34, 34, 34) 8.3%, rgb(0, 40, 60) 41.6%, rgb(0, 143, 213) 93.4%);
+    background: linear-gradient(114.9deg, rgb(7, 0, 36) 8.3%, rgb(0, 40, 60) 41.6%, rgb(0, 143, 213) 93.4%);
     height: 25%;
     display: flex;
     align-items: center;
@@ -85,6 +88,7 @@ a,li{
 #page2 {
     width: 100%;
     padding-top: 2rem;
+    scroll-snap-align: end;
 }
 
 
@@ -217,8 +221,7 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
     border-radius: 10px;
     padding: 10px;
     grid-column: 4;
-    grid-row: 1;
-
+    grid-row: span 3;
     background-color: var(--blue);
     color: white;
 }

@@ -58,10 +58,23 @@ a,li{
 }
 
 
+
+
 .profile {
     grid-column: span 2;
     grid-row: span 6;
-    border: 2px solid var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+    gap: 0.7rem;
+}
+
+.profile .icon {
+    width: 12rem;
+    height: 12rem;
+    background: red;
+    border-radius: 100%;
 }
 
 .appointements {
@@ -70,6 +83,30 @@ a,li{
     background-color: white;
     padding: 25px;
     border-radius: 30px;
+}
+
+.appointements .h1 h3 {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+.appointements .h1 h3 span {
+    font-weight: lighter;
+    color: var(--dark-grey);
+}
+
+.dicher {
+    grid-column: 3/7;
+    grid-row: span 2;
+    background-color: #537895;
+background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+    padding: 25px;
+    border-radius: 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .top {
@@ -223,4 +260,9 @@ a,li{
 
 .secunder div p {
     font-size: 0.8rem;
+}
+
+
+.stars {
+    cursor: pointer;
 }
