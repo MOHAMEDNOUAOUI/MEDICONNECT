@@ -17,12 +17,24 @@ class AppointementController extends Controller
     public function index()
     {
         $appointements = $this->appointements();
-       return view ('doctor.appointement' , ['appointements' => $appointements]);
+        $bookedSlots = $appointements->pluck('time_slot')->toArray();
+        $timeSlots = [
+            '08:00 AM - 09:00 AM',
+            '09:00 AM - 10:00 AM',
+            '10:00 AM - 11:00 AM',
+            '11:00 AM - 12:00 PM',
+            '13:00 PM - 14:00 PM',
+            '14:00 PM - 15:00 PM',
+            '15:00 PM - 16:00 PM',
+            '16:00 PM - 17:00 PM',
+        ];
+       return view ('doctor.appointement' , ['appointements' => $appointements , 'bookedSlots' => $bookedSlots , 'timeslots' => $timeSlots]);
     }
 
     public function appointements () {
+        $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
         $doctorId = Auth::id();
-        return appointement::with('Patient' , 'doctor')->where('doctor_id' , $doctorId)->get();
+        return appointement::with('Patient' , 'doctor')->where('doctor_id' , $doctorId)->where('appointment_date' , $currentDate)->get();
     }
 
     public function statsPatient() {

@@ -98,17 +98,8 @@
 
         <!-- main content -->
 
-        <main>
 
-        
-        <div class="table-data">
-                <div class="head">
-                    <h3>Medicaments</h3>
-                    <button name="add" id="addmedicament" data-bs-toggle="modal" data-bs-target="#test"><h3>Add</h3></button>
-
-                    
-
-                    <form action="{{ route('doctor.medic.add')}}" method="post">
+        <form action="{{ route('doctor.medic.add')}}" method="post">
                 @csrf
 
 
@@ -151,6 +142,19 @@
 
 
                     </form>
+
+        <main>
+
+
+        
+        <div class="table-data" style="width: 100%;">
+                <div class="flex justify-between" style="width: 100%;">
+                    <h3>Medicaments</h3>
+                    <button name="add" id="addmedicament" data-bs-toggle="modal" data-bs-target="#test"><h3>Add</h3></button>
+
+                    
+
+                 
                 </div>
 
                 <table>

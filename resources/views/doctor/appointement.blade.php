@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Add Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/doctor/doctor.css')}}">
     <title>DoctorPanel</title>
 </head>
@@ -100,23 +103,47 @@
             </div>
 
 
-        <div class="box-info">
-            
-        @foreach ($appointements as $app)
-        <li>
-            <div class="time">
-            <p>{{$app->end_time}}</p>
+        <div class="box-info-appointement">
+
+
+        @foreach($timeslots as $time)
+
+        @if(in_array($time , $bookedSlots))
+
+                <div>
+                    <h3 class="text-xl">{{$time}}</h3>
+
+                    <div class="time-{{$time}}">
+                <div>
+                @php
+                $appointment = $appointements->where('time_slot', $time)->first();
+            @endphp
+
+@if ($appointment)
+                <div>
+                    <p>{{ $appointment->patient->name}}</p>
+                </div>
+                @endif
+
+
+                </div>
             </div>
+                </div>
+
+        @else
         <div>
-        <i>profile</i>
-                    <span class="text">
-                    <h3>{{$app->Patient->name}}</h3>
-                    <p>{{$app->Patient->phonenumber}}</p>
-                </span>
-        </div>
-                </li>
-                
+                    <h3 class="text-xl">{{$time}}</h3>
+
+                    <div class="time-{{$time}}">
+                <p></p>
+            </div>
+                </div>
+
+        @endif
         @endforeach
+
+
+            
 
         </div>
             
