@@ -39,6 +39,7 @@
                         
 
 
+
                         <li>
                             <a class="" href="">
                                Appointements</a>
@@ -91,8 +92,44 @@
 
 
 
+    <section class="urgentpage">
+            <div class="coloredurgent">
+                <div class="flex items-center justify-between">
+                <h1 class="darkred text-4xl font-bold">URGENT</h1>
+                <ion-icon class="darker text-4xl" name="hourglass-outline"></ion-icon>
+                </div>
+                <p>If you require immediate medical attention or have urgent concerns, we prioritize your health and well-being. Please utilize our dedicated urgent appointment section to schedule a prompt consultation with our medical team. Your health is our utmost priority, and we are here to provide you with the timely care and attention you need. Schedule your urgent appointment now to address any pressing medical issues swiftly.</p>
+            
+
+                <form action="{{route('urgent')}}" method="post">
+                @csrf
+
+                        <button class="urgentbutton" type="submit">Urgent</button>
+
+                </form>
+            
+            
+            </div>
+    </section>
+
+
+
     <section id="page2">
+        
+
+    <form action="{{route('home')}}" mathod="get" style="margin-left:2rem;margin-bottom : 1rem">
+        <select name="specialite" id="">
+            <option value="ALL"  selected>All</option>
+            @foreach($specialites as $specialite)
+            <option value="{{$specialite->Specialite}}">{{$specialite->Specialite}}</option>
+            @endforeach
+        </select>
+        <button type="submit">submit</button>
+    </form>
+
+
         <div class="wrapper">
+        
 
                 <ul class="boxer">
 
@@ -108,14 +145,11 @@
 
         <!-- FAVOURITE PART -->
 @if(count($favourite) > 0)
-
-@foreach($favourite as $favouri)
-        @if($favouri->doctor_id == $doctor->id)
-        <i data-key="{{$doctor->id}}" class="bx bxs-heart"></i>
-        @else
-        <i data-key="{{$doctor->id}}" class="bx bx-heart"></i>
-        @endif
-@endforeach
+@if(in_array($doctor->id , $fav))
+<i data-key="{{$doctor->id}}" class="bx bxs-heart"></i>
+@else
+<i data-key="{{$doctor->id}}" class="bx bx-heart"></i>
+@endif
 
    
 @else
@@ -162,7 +196,17 @@
 
 
         <div class="rightop">
-            <h3>Favourites</h3>
+            <h3 >Favourites</h3>
+            @foreach($favourite as $fav)
+
+            
+            <div class="Av" data-key="{{$fav->doctor->name}}">
+                <h3 class="text-2xl">{{$fav->doctor->name}}</h3>
+                <p>{{$fav->doctor->specialite->Specialite}}</p>
+            </div>
+
+            @endforeach
+          
         </div>
 
 
@@ -251,6 +295,15 @@ document.querySelectorAll('.Av').forEach(function(element) {
 
 
     </script>
+
+@if(session('message'))
+    <script>
+        alert("{{ session('message') }}");
+    </script>
+@endif
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 
 </body>

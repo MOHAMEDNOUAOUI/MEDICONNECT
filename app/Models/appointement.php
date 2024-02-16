@@ -13,7 +13,8 @@ class appointement extends Model
         'patient_id',
         'doctor_id',
         'time_slot',
-        'appointment_date'
+        'appointment_date',
+        'status'
     ];
 
 

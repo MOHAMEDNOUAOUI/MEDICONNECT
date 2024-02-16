@@ -27,12 +27,14 @@ use App\Http\Controllers\SpecialiteController;
     /////
     Route::middleware(['auth', 'verified' , 'patient'])->group(function() {
         Route::get('/', [PagesController::class , 'index'])->name('home');
+        Route::get('/', [PagesController::class , 'index'])->name('home');
         Route::post('/appointement' , [AppointementController::class , 'store'])->name('appointement.add');
         Route::get('/doctor/{name}' , [PagesController::class , 'DedicatedDoctorPage'])->name('Dedicated.doctor.page');
         Route::post('/addfavourite' , [FavouriteController::class , 'create'])->name('favourite.add');
         Route::post('/deletefavourite' , [FavouriteController::class , 'destroy'])->name('favourite.destroy');
         Route::post('/doctor/addcomment' , [CommentsController::class , 'create'])->name('comment.add');
         Route::post('/doctor/rate' , [RatingsController::class , 'create'])->name('rating.add');
+        Route::post('/urgent' , [AppointementController::class , 'urgent'])->name('urgent');
     });
 
 

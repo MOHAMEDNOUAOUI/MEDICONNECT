@@ -103,6 +103,8 @@
        @if($time < 4)
        @if(!in_array($value, $bookedSlots))
                         <p data-key="{{$one->id}}" class="appointementtime">{{$value}}</p>
+                        @else
+                        <p class="reserved">{{$value}}</p>
                     @endif
        @endif
                     

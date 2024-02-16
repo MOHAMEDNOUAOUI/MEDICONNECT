@@ -15,10 +15,25 @@ use Carbon\Carbon;
 
 class PagesController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $currentDate = Carbon::now('Africa/Casablanca')->format('Y-m-d');
         // $currentTime->setTimezone('Africa/Casablanca');
-        $doctors = User::with(['appointmentsAsDoctor' , 'specialite'])->where('role' , 'doctor')->paginate(12);
+
+        $spec = $request->input('specialite');
+
+        if(isset($spec)) {
+            if($spec !== 'ALL') {
+                $doctors = User::with(['appointmentsAsDoctor', 'specialite'])->where('role', 'doctor')->whereHas('specialite', function ($query) use ($request) {
+                    $query->where('Specialite', $request->input('specialite'));
+                })
+                ->paginate(12);
+            }
+            else {
+                return redirect()->route('home');
+            }
+        } else {
+            $doctors = User::where('role', 'doctor')->paginate(12);
+        }
         
 
         // foreach($doctors as $doctor ){
@@ -32,17 +47,34 @@ class PagesController extends Controller
         $userappointements = appointement::with(['patient'])->where('patient_id' , $patientId)->get();
 
 
-        $favourites = favourite::with(['doctor'])->where('patient_id' , Auth::id())->get();
+        $favourites = Favourite::with(['doctor.specialite'])
+        ->whereHas('doctor', function ($query) {
+            $query->where('role', 'doctor');
+        })
+        ->where('patient_id', Auth::id())
+        ->get();
+
+        $favouritenumber = Favourite::with(['doctor.specialite'])
+        ->whereHas('doctor', function ($query) {
+            $query->where('role', 'doctor');
+        })
+        ->where('patient_id', Auth::id())
+        ->pluck('doctor_id')->toArray();
+
+
 
 
         
+        $specialites = Specialite::get();
         
 
         return view('patient.PatientPage' , [
             'doctors' => $doctors , 
             'Datezone' => $currentDate,
             'userschedul' => $userappointements,
-            'favourite' => $favourites   
+            'favourite' => $favourites ,
+            'specialites' => $specialites,
+            'fav' => $favouritenumber
         ]);
 
     }
@@ -100,8 +132,8 @@ class PagesController extends Controller
         $doctorinfos = User::with(['specialite'])->where('id' , $doctorId)->first();
 
         $timeSlots = [
-            '8:00 AM - 9:00 AM',
-            '9:00 AM - 10:00 AM',
+            '08:00 AM - 09:00 AM',
+            '09:00 AM - 10:00 AM',
             '10:00 AM - 11:00 AM',
             '11:00 AM - 12:00 PM',
             '13:00 PM - 14:00 PM',

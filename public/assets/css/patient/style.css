@@ -124,6 +124,79 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
     grid-column: 4;
 }
 
+
+
+.urgentpage {
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: center;
+    background-color: white;
+    padding: 4rem;
+    
+}
+
+.urgentpage .coloredurgent .darkred {
+
+    background: #8E0E00;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+color: transparent;
+
+background-clip: text;
+-webkit-background-clip: text;
+
+}
+
+.urgentpage .coloredurgent  .darker {
+    animation: rotate 5s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .urgentbutton {
+        font-weight: bold;
+        color: black;
+        border: 1px solid darkred;
+        padding: 0.5rem 2rem;
+        margin-left: 2rem;
+        transition: 0.3s ease-in-out;
+  }
+
+  .urgentbutton:hover {
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: white;
+    transform: scale(1.03);
+  }
+
+
+
+
+
+
+.urgentpage .coloredurgent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.urgentpage .coloredurgent p {
+    width: 50%;
+}
+
+#page2 {
+    height: 100vh;
+}
+
 #page2  .boxer {
     grid-column: span 3;
     display: grid;
@@ -224,6 +297,30 @@ background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, F
     grid-row: span 3;
     background-color: var(--blue);
     color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+
+.rightop div{
+    background-color: white;
+    padding: 1rem;
+    border-radius: 20px;
+    color: var(--dark);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.rightop div:hover {
+    transform: scale(1.05);
+}
+
+.rightop > h3 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 .rightbottom {

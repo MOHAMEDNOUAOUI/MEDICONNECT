@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\appointement;
+use App\Models\Specialite;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -89,5 +90,95 @@ class AppointementController extends Controller
     public function destroy(appointement $appointement)
     {
         //
+    }
+
+
+
+
+
+    public function urgent() {
+
+
+        $Datezone = Carbon::now('Africa/Casablanca')->format('Y-m-d');
+
+
+        $currentHour = Carbon::now()->timezone('africa/casablanca')->format('H');
+        $nextHour = Carbon::now()->timezone('africa/casablanca')->addHour()->format('H');
+        
+        if($currentHour > 12 ){
+            $time = $currentHour . ':00 PM - ' . $nextHour.':00 PM';
+        }
+        else {
+            $time = $currentHour . ':00 AM - ' . $nextHour.':00 AM';
+        }
+
+        
+
+
+        $doctors = User::with(['specialite', 'appointmentsAsDoctor'])
+        ->whereHas('specialite', function ($query) {
+            $query->where('Specialite', 'General Medicine');
+        })
+        ->get();
+
+
+    
+        $checker = $appoitements = appointement::where('patient_id' , Auth::id())->where('appointment_date' , $Datezone)->where('status' , 'urgent')->get();
+
+
+        if(count($checker) == 0) {
+
+            foreach($doctors as $doctor) {
+
+                $appoitements = appointement::where('doctor_id' , $doctor->id)->where('appointment_date' , $Datezone)->get();
+    
+    
+    
+                if(count($appoitements) > 0){
+    
+
+                    foreach($appoitements as $appoitement){
+                        $timeslots = $appoitements->pluck('time_slot')->toArray();
+                        if(!in_array($time , $timeslots)){
+                            appointement::create([
+                                'doctor_id' => $doctor->id,
+                                'patient_id' => Auth::id(),
+                                'status' => 'urgent',
+                                'time_slot' => $time
+                            ]);
+                            break;
+                        }
+                    }
+                   
+    
+                }
+                else {
+                    appointement::create([
+                        'doctor_id' => $doctor->id,
+                        'patient_id' => Auth::id(),
+                        'status' => 'urgent',
+                        'time_slot' => $time
+                    ]);
+                    break;
+                }
+      
+    
+            }
+
+            
+        }
+        else{
+            return redirect()->back()->with('message', 'You have already taken an emergency appointment today.');
+        }
+       
+
+        
+
+
+
+
+        return redirect()->back();
+
+        
     }
 }
